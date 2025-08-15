@@ -24,8 +24,7 @@ def get_brewery_list_from_openbrewerydb(data_pipeline: PipelineModel, full_list:
         if debug:
             for brewery in breweries:
                 data_pipeline.logger.debug(message=str(brewery))
-        data_pipeline.data.bronze_data = breweries
-        return
+        data_pipeline.data.raw_data = breweries
 
     else:
         data_pipeline.logger.warning(message=GET_DATA_FROM_API_FAILED.format(error_code=response.status_code))

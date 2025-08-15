@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 BLOB_STORAGE_ACCOUNT_KEY = os.getenv("BLOB_STORAGE_ACCOUNT_KEY",
                                      "dev-key"
@@ -13,3 +14,5 @@ BREWERY_API_LIST_URL = os.getenv(
 )
 
 DEBUG_ACTIVE = os.getenv("DEBUG_ACTIVE", True)
+
+ROOT_LOCAL_PATH = Path(__file__).parent.parent.parent.parent
