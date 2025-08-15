@@ -22,7 +22,7 @@ def get_brewery_list_from_openbrewerydb(data_pipeline: PipelineModel, full_list:
         # Parse the JSON response
         breweries = response.json()
         if debug:
-            for brewery in breweries:
+            for brewery in breweries[:5]:
                 data_pipeline.logger.debug(message=str(brewery))
         data_pipeline.data.raw_data = breweries
 

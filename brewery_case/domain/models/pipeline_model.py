@@ -21,6 +21,7 @@ class PipeLineParams(BaseModel):
 class PipelineModel(BaseModel):
     pipeline_id: str
     pipeline_name: str
+    pk_columns: Optional[str] = None
     pipeline_parameters: PipeLineParams
     lake_path: Optional[str] = None
     data: DataContainer = DataContainer()
