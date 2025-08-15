@@ -18,7 +18,6 @@ if __name__ == '__main__':
 
         # PROCESS DATA FROM BRONZE TO SILVER
         process_data_from_bronze_to_silver(data_pipeline)
-        pass
 
         # ENRICH DATA FROM SILVER TO GOLD
 
