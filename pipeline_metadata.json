@@ -1,0 +1,91 @@
+{
+  "pipeline": {
+    "pipeline_id": "CP0001",
+    "pipeline_name": "brewery_pipeline",
+    "pipeline_parameters": {
+      "priority": "standard"
+    },
+    "lake_path": "data/json/openbrewery",
+    "schema": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "brewery_type",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "street",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "city",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "state",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "postal_code",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "country",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "longitude",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "latitude",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "phone",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "website_url",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "updated_at",
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "tag_list",
+        "type": "string",
+        "nullable": true
+      }
+    ]
+  }
+  },
+  "spark": {
+    "app_name": "BreweryDataProcessing",
+    "configs": {
+      "spark.sql.shuffle.partitions": 200,
+      "spark.default.parallelism": 100
+    }
+  }
+}
