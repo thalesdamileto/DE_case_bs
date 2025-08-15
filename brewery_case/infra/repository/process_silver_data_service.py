@@ -19,6 +19,7 @@ def read_bronze_data_to_transform(data_pipeline: PipelineModel, read_path):
 
     if data_pipeline.dry_run:
         bronze_data = []
+        bronze_read_files = []
         bronze_local_read_path = ROOT_LOCAL_PATH / BRONZE_LOCAL_PATH
         bronze_files_list = list(bronze_local_read_path.glob("*.json"))
         for bronze_file in bronze_files_list:
@@ -29,10 +30,12 @@ def read_bronze_data_to_transform(data_pipeline: PipelineModel, read_path):
                 bronze_data.extend(file_data)
             else:
                 bronze_data.append(file_data)
+            bronze_read_files.append(bronze_file)
 
     else:
         bronze_data = spark.read.schema(data_pipeline.data.spark_schema).format("json").load(read_path)
 
+    data_pipeline.data.general_info = {'bronze_read_files': bronze_read_files}
     data_pipeline.data.bronze_data = bronze_data
 
 
