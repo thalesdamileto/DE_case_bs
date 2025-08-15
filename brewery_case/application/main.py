@@ -20,7 +20,7 @@ if __name__ == '__main__':
         process_data_from_bronze_to_silver(data_pipeline)
 
         # ENRICH DATA FROM SILVER TO GOLD
-
+        pass
     except Exception as error:
         try:
             data_pipeline.logger.error(message=str(error))

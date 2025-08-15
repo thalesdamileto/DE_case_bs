@@ -21,6 +21,7 @@ def process_data_from_bronze_to_silver(data_pipeline: PipelineModel) -> None:
     if data_pipeline.dry_run:
         silver_df = spark.createDataFrame(data_pipeline.data.bronze_data, schema=data_pipeline.data.spark_schema)
         data_pipeline.data.silver_data = silver_df
+        data_pipeline.data.silver_data.show(truncate=False)
 
     else:
         silver_df = spark.read.schema(data_pipeline.data.spark_schema).format("json").load(read_path)
