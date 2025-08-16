@@ -1,3 +1,6 @@
+from brewery_case.infra.constants.constants import DEFAULT_LIST_LEN
+from brewery_case.infra.configs.settings import DEFAULT_FULL_LIST
+from brewery_case.infra.constants.texts import PIPELINE_FINISHED
 from brewery_case.infra.repository.brewery_api_service import get_brewery_list_from_openbrewerydb
 from brewery_case.infra.repository.process_silver_data_service import process_data_from_bronze_to_silver
 from brewery_case.infra.repository.save_bronze_data_service import save_data_to_bronze_layer
@@ -15,7 +18,7 @@ if __name__ == '__main__':
 
     try:
         # GET DATA FROM API
-        get_brewery_list_from_openbrewerydb(data_pipeline, full_list=False, list_len=200)
+        get_brewery_list_from_openbrewerydb(data_pipeline, full_list=DEFAULT_FULL_LIST, list_len=DEFAULT_LIST_LEN)
 
         # SAVE DATA INTO BRONZE
         save_data_to_bronze_layer(data_pipeline)
@@ -27,6 +30,6 @@ if __name__ == '__main__':
         enrich_gold_data_from_silver_to_gold(data_pipeline)
 
         # PROCESS FINISHED
-        data_pipeline.logger.info('Data pipeline successfully finished.')
+        data_pipeline.logger.info(PIPELINE_FINISHED)
     except Exception as error:
         data_pipeline.logger.error(message=str(error))

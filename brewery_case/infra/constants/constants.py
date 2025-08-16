@@ -6,7 +6,11 @@ BRONZE_LOCAL_PATH = 'data/bronze'
 
 BRONZE_LOCAL_PROCESSED_PATH = 'data/bronze/processed'
 
+DEFAULT_LIST_LEN = 200
+
 GOLD_LOCAL_PATH = 'data/gold'
+
+MAX_RETRIES = 3
 
 SILVER_LOCAL_PATH = 'data/silver'
 

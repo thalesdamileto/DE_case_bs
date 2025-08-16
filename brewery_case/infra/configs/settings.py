@@ -13,6 +13,8 @@ BREWERY_API_LIST_URL = os.getenv(
     "https://api.openbrewerydb.org/v1/breweries"
 )
 
-DEBUG_ACTIVE = os.getenv("DEBUG_ACTIVE", True)
+DEBUG_ACTIVE = os.getenv("DEBUG_ACTIVE", False)
+
+DEFAULT_FULL_LIST = os.getenv("DEFAULT_FULL_LIST", False)
 
 ROOT_LOCAL_PATH = Path(__file__).parent.parent.parent.parent
