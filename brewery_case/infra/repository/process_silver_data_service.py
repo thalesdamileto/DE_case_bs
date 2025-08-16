@@ -5,7 +5,8 @@ from pyspark.sql.functions import col, row_number, input_file_name
 from pyspark.sql.window import Window
 
 from brewery_case.domain.models.pipeline_model import PipelineModel
-from brewery_case.infra.constants.constants import BRONZE_CONTAINER_NAME, SILVER_TABLE_NAME, SPARK_READ_BRONZE_PATH
+from brewery_case.infra.constants.texts import SILVER_START_PROCESS, PROCESS_FAILED_RETRY
+from brewery_case.infra.constants.constants import BRONZE_CONTAINER_NAME, SILVER_TABLE_NAME, SPARK_READ_BRONZE_PATH, MAX_RETRIES
 from brewery_case.infra.repository.helpers.dry_run_helper import dry_run_write_silver_table, dry_run_read_bronze_data, \
     dry_run_move_processed_bronze_data
 
@@ -54,17 +55,33 @@ def write_data_to_silver(data_pipeline: PipelineModel):
 
     silver_quality_checks(data_pipeline)
 
-    if data_pipeline.dry_run:
-        dry_run_write_silver_table(data_pipeline=data_pipeline)
-        # move files after being processed, so they won't be processed again
-        dry_run_move_processed_bronze_data(data_pipeline)
+    if data_pipeline.logger.debug_active:
+        data_pipeline.data.silver_data.show(truncate=False)
 
-    else:
-        data_pipeline.data.silver_data.write.mode("merge").format("delta").saveAsTable(SILVER_TABLE_NAME)
+    for attempt in range(MAX_RETRIES):
+        try:
+            if data_pipeline.dry_run:
+                dry_run_write_silver_table(data_pipeline=data_pipeline)
+                # move files after being processed, so they won't be processed again
+                dry_run_move_processed_bronze_data(data_pipeline)
+
+            else:
+                data_pipeline.data.silver_data.write.mode("merge").format("delta").saveAsTable(SILVER_TABLE_NAME)
+
+            return
+
+        except Exception as error:
+            error_msg = PROCESS_FAILED_RETRY.format(attempt=attempt, max_retries=MAX_RETRIES, error=str(error))
+            data_pipeline.logger.warning(error_msg)
+            continue
+
+    error_msg = PROCESS_FAILED_RETRY.format(attempt=3, max_retries=MAX_RETRIES, error='max retries')
+    data_pipeline.logger.error(error_msg)
+    raise Exception(error_msg)
 
 
 def process_data_from_bronze_to_silver(data_pipeline: PipelineModel) -> None:
-    data_pipeline.logger.info('Starting process data from bronze to silver')
+    data_pipeline.logger.info(SILVER_START_PROCESS)
     read_path = SPARK_READ_BRONZE_PATH.format(bronze_container=BRONZE_CONTAINER_NAME,
                                               folder_path=data_pipeline.lake_path)
 
