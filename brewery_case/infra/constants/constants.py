@@ -6,6 +6,8 @@ BRONZE_LOCAL_PATH = 'data/bronze'
 
 BRONZE_LOCAL_PROCESSED_PATH = 'data/bronze/processed'
 
+GOLD_LOCAL_PATH = 'data/gold'
+
 SILVER_LOCAL_PATH = 'data/silver'
 
 SILVER_TABLE_NAME = "silver.default.brewery_list"

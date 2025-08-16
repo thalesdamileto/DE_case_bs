@@ -6,6 +6,7 @@ from azure.storage.blob import BlobServiceClient
 from brewery_case.infra.configs.settings import BLOB_STORAGE_ACCOUNT_KEY, BLOB_STORAGE_CONN_STRING, ROOT_LOCAL_PATH
 from brewery_case.infra.constants.constants import BRONZE_BLOB_PATTERN_NAME, BRONZE_CONTAINER_NAME, BRONZE_LOCAL_PATH
 from brewery_case.infra.constants.texts import BRONZE_DATA_UPLOADED
+from brewery_case.infra.repository.helpers.dry_run_helper import dry_run_write_bronze_data
 from brewery_case.domain.models.pipeline_model import PipelineModel
 
 
@@ -17,10 +18,7 @@ def raw_data_to_bronze_data(data_pipeline: PipelineModel) -> None:
 def save_data_to_bronze(data_pipeline: PipelineModel, lake_connection_string, container_name, blob_name,
                         full_blob_name) -> None:
     if data_pipeline.dry_run:
-        bronze_local_path = ROOT_LOCAL_PATH / BRONZE_LOCAL_PATH
-        bronze_local_path.mkdir(parents=True, exist_ok=True)
-        bronze_file_path = bronze_local_path / f"{blob_name}"
-        bronze_file_path.write_text(data_pipeline.data.bronze_data)
+        dry_run_write_bronze_data(data_pipeline=data_pipeline, blob_name=blob_name)
 
     else:
         # Initialize BlobServiceClient
@@ -40,6 +38,7 @@ def save_data_to_bronze(data_pipeline: PipelineModel, lake_connection_string, co
 
 
 def save_data_to_bronze_layer(data_pipeline: PipelineModel) -> None:
+    data_pipeline.logger.info('Starting save raw data to bronze.')
     # Connection details
     lake_connection_string = BLOB_STORAGE_CONN_STRING.format(your_account_key=BLOB_STORAGE_ACCOUNT_KEY)
     container_name = BRONZE_CONTAINER_NAME
