@@ -2,6 +2,7 @@
   "pipeline": {
     "pipeline_id": "CP0001",
     "pipeline_name": "brewery_pipeline",
+    "pk_columns": "id",
     "pipeline_parameters": {
       "priority": "standard"
     },

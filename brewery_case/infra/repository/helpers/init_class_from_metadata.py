@@ -63,6 +63,7 @@ def config_pipeline_from_metadata() -> PipelineModel:
     pipe_settings = {
         'pipeline_id': metadata['pipeline'].get('pipeline_id', None),
         'pipeline_name': metadata["pipeline"].get('pipeline_name', None),
+        'pk_columns': metadata["pipeline"].get('pk_columns', None),
         'pipeline_parameters': metadata["pipeline"].get('pipeline_parameters', {}),
         'lake_path': metadata["pipeline"].get('lake_path', None),
         'data': {'spark_schema': build_schema_from_config(metadata["pipeline"]["schema"])},
