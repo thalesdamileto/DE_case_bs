@@ -10,8 +10,6 @@ This repository implements a data engineering pipeline for a Case challenge. The
 
 ### API Consumption
 Fetches data from https://www.openbrewerydb.org/.
-### Orchestration
-[Specify tool, e.g., Apache Airflow] for scheduling, retries, and error handling.
 ### Data Transformation
 Using Python/PySpark.
 ### Containerization
